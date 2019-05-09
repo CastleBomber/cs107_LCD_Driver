@@ -1,0 +1,209 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;*******************************************************
+                       ***********************
+    2 00000000         ; CS 107: Computer Architecture and Organization
+    3 00000000         ;
+    4 00000000         ; Project: LCDDriver
+    5 00000000         ; Filename: main.s
+    6 00000000         ; Author: Leonard Euler
+    7 00000000         ;
+    8 00000000         ; Editor: Richie Romero Castillo
+    9 00000000         ; Semester: Spring 2019
+   10 00000000         ;
+   11 00000000         ; Description: 
+   12 00000000         ; program uses a device driver to send two strings to LC
+                       D display.
+   13 00000000         ;
+   14 00000000         ;*******************************************************
+                       ***********************  
+   15 00000000         
+   16 00000000         ; 5th item to work on
+   17 00000000         
+   18 00000000 00000001 
+                       BACKLIGHT_ON
+                               EQU              0x01
+   19 00000000 00000000 
+                       BACKLIGHT_OFF
+                               EQU              0x00
+   20 00000000         
+   21 00000000                 AREA             SBCCCODE, CODE
+   22 00000000         
+   23 00000000                 IMPORT           __initial_sp
+   24 00000000                 IMPORT           LCD_INIT
+   25 00000000                 IMPORT           LCD_BACKLIGHT
+   26 00000000                 IMPORT           WRITE_CSTRING
+   27 00000000         
+   28 00000000         start   PROC
+   29 00000000                 EXPORT           start     [WEAK]
+   30 00000000         
+   31 00000000         ; Configure the stack
+   32 00000000 F8DF D04C       LDR              sp, =__initial_sp
+   33 00000004 4D12            LDR              r5, =__initial_sp ; give me jui
+                                                            cy info
+   34 00000006         
+   35 00000006         ; Configure the LCD Hardware
+   36 00000006 F7FF FFFE       BL               LCD_INIT
+   37 0000000A         
+   38 0000000A         ; Turn on the LCD Backlight
+   39 0000000A F04F 0001       MOV              r0, #BACKLIGHT_ON ; 16-bit
+   40 0000000E B401            PUSH             {r0}        ; preserve r0 for..
+                                                            ?
+   41 00000010 F7FF FFFE       BL               LCD_BACKLIGHT
+   42 00000014 BC01            POP              {r0}        ; what gets popped 
+                                                            into r0?
+   43 00000016         
+   44 00000016         ; Write first string on first line.
+   45 00000016 F04F 0400       MOV              r4, #0
+   46 0000001A 4D0E            LDR              r5, =cstring0
+   47 0000001C F7FF FFFE       BL               WRITE_CSTRING
+   48 00000020         
+   49 00000020         ; Write second string on second line.
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   50 00000020 F04F 0401       MOV              r4, #1
+   51 00000024 4D0C            LDR              r5, =cstring1
+   52 00000026 F7FF FFFE       BL               WRITE_CSTRING
+   53 0000002A         
+   54 0000002A         ; Loop forever
+   55 0000002A E7FE            B                .
+   56 0000002C                 ENDP
+   57 0000002C         
+   58 0000002C         ; Leave this first string
+   59 0000002C 43 53 31 
+              30 37 20 
+              4C 43 44 
+              20 44 72 
+              69 76 65 
+              72 00    cstring0
+                               DCB              "CS107 LCD Driver", 0
+   60 0000003D         ; Change this to as much of your name as will fit.
+   61 0000003D         ; Be sure to leave the first three characters "by ".
+   62 0000003D 62 79 20 
+              52 69 63 
+              68 69 65 
+              20 43 42 
+              6F 6D 62 
+              73 00    cstring1
+                               DCB              "by Richie CBombs", 0
+   63 0000004E                 END
+              00 00 00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_LPC_4088 -IC:\Keil
+_v5\ARM\PACK\Keil\LPC4000_DFP\2.1.0\Device\Include -IC:\Keil_v5\ARM\CMSIS\Inclu
+de --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 525" --prede
+fine="CORE_M4 SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+SBCCCODE 00000000
+
+Symbol: SBCCCODE
+   Definitions
+      At line 21 in file main.s
+   Uses
+      None
+Comment: SBCCCODE unused
+cstring0 0000002C
+
+Symbol: cstring0
+   Definitions
+      At line 59 in file main.s
+   Uses
+      At line 46 in file main.s
+Comment: cstring0 used once
+cstring1 0000003D
+
+Symbol: cstring1
+   Definitions
+      At line 62 in file main.s
+   Uses
+      At line 51 in file main.s
+Comment: cstring1 used once
+start 00000000
+
+Symbol: start
+   Definitions
+      At line 28 in file main.s
+   Uses
+      At line 29 in file main.s
+Comment: start used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+BACKLIGHT_OFF 00000000
+
+Symbol: BACKLIGHT_OFF
+   Definitions
+      At line 19 in file main.s
+   Uses
+      None
+Comment: BACKLIGHT_OFF unused
+BACKLIGHT_ON 00000001
+
+Symbol: BACKLIGHT_ON
+   Definitions
+      At line 18 in file main.s
+   Uses
+      At line 39 in file main.s
+Comment: BACKLIGHT_ON used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+LCD_BACKLIGHT 00000000
+
+Symbol: LCD_BACKLIGHT
+   Definitions
+      At line 25 in file main.s
+   Uses
+      At line 41 in file main.s
+Comment: LCD_BACKLIGHT used once
+LCD_INIT 00000000
+
+Symbol: LCD_INIT
+   Definitions
+      At line 24 in file main.s
+   Uses
+      At line 36 in file main.s
+Comment: LCD_INIT used once
+WRITE_CSTRING 00000000
+
+Symbol: WRITE_CSTRING
+   Definitions
+      At line 26 in file main.s
+   Uses
+      At line 47 in file main.s
+      At line 52 in file main.s
+
+__initial_sp 00000000
+
+Symbol: __initial_sp
+   Definitions
+      At line 23 in file main.s
+   Uses
+      At line 32 in file main.s
+      At line 33 in file main.s
+
+4 symbols
+346 symbols in table
